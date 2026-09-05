@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "title": "Android Phone",
+    "description": "Modern Android smartphone with a bright display and reliable everyday performance.",
+    "price": 399.99
+  },
+  {
+    "id": 2,
+    "title": "Wireless Headphones",
+    "description": "Comfortable over-ear headphones with stable Bluetooth connection and clear sound.",
+    "price": 89.99
+  },
+  {
+    "id": 3,
+    "title": "USB-C Charger",
+    "description": "Compact USB-C wall charger with fast charging support for phones and tablets.",
+    "price": 24.99
+  },
+  {
+    "id": 4,
+    "title": "Mechanical Keyboard",
+    "description": "Mechanical keyboard with tactile switches and adjustable backlight.",
+    "price": 109.99
+  },
+  {
+    "id": 5,
+    "title": "Wireless Mouse",
+    "description": "Ergonomic wireless mouse designed for daily office work and browsing.",
+    "price": 29.99
+  },
+  {
+    "id": 6,
+    "title": "External SSD 1TB",
+    "description": "Portable solid-state drive with fast data transfer and compact design.",
+    "price": 119.99
+  },
+  {
+    "id": 7,
+    "title": "Power Bank 20000mAh",
+    "description": "High-capacity power bank with two USB outputs and USB-C charging.",
+    "price": 49.99
+  },
+  {
+    "id": 8,
+    "title": "Bluetooth Speaker",
+    "description": "Portable Bluetooth speaker with balanced sound and long battery life.",
+    "price": 64.99
+  },
+  {
+    "id": 9,
+    "title": "Smart Watch",
+    "description": "Smart watch with fitness tracking, notifications and heart rate monitoring.",
+    "price": 149.99
+  },
+  {
+    "id": 10,
+    "title": "27-inch Monitor",
+    "description": "27-inch monitor with sharp image quality and comfortable viewing angles.",
+    "price": 229.99
+  },
+  {
+    "id": 11,
+    "title": "Full HD Webcam",
+    "description": "Full HD webcam with built-in microphone for video calls and meetings.",
+    "price": 54.99
+  },
+  {
+    "id": 12,
+    "title": "USB Microphone",
+    "description": "USB condenser microphone for voice recording, streaming and online calls.",
+    "price": 79.99
+  },
+  {
+    "id": 13,
+    "title": "Laptop Stand",
+    "description": "Adjustable aluminum laptop stand for better posture and improved cooling.",
+    "price": 39.99
+  },
+  {
+    "id": 14,
+    "title": "USB-C Hub",
+    "description": "Multiport USB-C hub with HDMI, USB-A and memory card support.",
+    "price": 44.99
+  },
+  {
+    "id": 15,
+    "title": "HDMI Cable",
+    "description": "Durable HDMI cable for monitors, televisions and game consoles.",
+    "price": 12.99
+  },
+  {
+    "id": 16,
+    "title": "Wireless Charger",
+    "description": "Slim wireless charging pad compatible with Qi-enabled devices.",
+    "price": 34.99
+  },
+  {
+    "id": 17,
+    "title": "Android Tablet",
+    "description": "Lightweight Android tablet for reading, streaming and everyday tasks.",
+    "price": 279.99
+  },
+  {
+    "id": 18,
+    "title": "Gaming Mouse",
+    "description": "Responsive gaming mouse with programmable buttons and adjustable sensitivity.",
+    "price": 59.99
+  },
+  {
+    "id": 19,
+    "title": "Gaming Keyboard",
+    "description": "Full-size gaming keyboard with RGB lighting and fast key response.",
+    "price": 94.99
+  },
+  {
+    "id": 20,
+    "title": "Noise Cancelling Earbuds",
+    "description": "Compact wireless earbuds with active noise cancellation and charging case.",
+    "price": 129.99
+  },
+  {
+    "id": 21,
+    "title": "USB Flash Drive 128GB",
+    "description": "Compact 128GB USB flash drive for documents, photos and backups.",
+    "price": 19.99
+  },
+  {
+    "id": 22,
+    "title": "Portable Hard Drive 2TB",
+    "description": "External 2TB hard drive for large backups and media collections.",
+    "price": 84.99
+  },
+  {
+    "id": 23,
+    "title": "Wi-Fi Router",
+    "description": "Dual-band Wi-Fi router for stable home internet and multiple devices.",
+    "price": 74.99
+  },
+  {
+    "id": 24,
+    "title": "Mesh Wi-Fi System",
+    "description": "Two-unit mesh Wi-Fi system for wider and more reliable home coverage.",
+    "price": 189.99
+  },
+  {
+    "id": 25,
+    "title": "Ethernet Adapter",
+    "description": "USB-C to Ethernet adapter for fast and stable wired network access.",
+    "price": 27.99
+  },
+  {
+    "id": 26,
+    "title": "Portable Monitor",
+    "description": "Slim portable monitor for laptops, travel and dual-screen productivity.",
+    "price": 219.99
+  },
+  {
+    "id": 27,
+    "title": "Mini Projector",
+    "description": "Compact projector for movies, presentations and casual home entertainment.",
+    "price": 159.99
+  },
+  {
+    "id": 28,
+    "title": "Digital Drawing Tablet",
+    "description": "Drawing tablet with pressure-sensitive pen for design and illustration.",
+    "price": 99.99
+  },
+  {
+    "id": 29,
+    "title": "E-Reader",
+    "description": "Lightweight e-reader with glare-free display and long battery life.",
+    "price": 139.99
+  },
+  {
+    "id": 30,
+    "title": "Action Camera",
+    "description": "Compact action camera for travel, sports and outdoor recording.",
+    "price": 179.99
+  },
+  {
+    "id": 31,
+    "title": "Dash Camera",
+    "description": "Full HD dash camera with loop recording and wide viewing angle.",
+    "price": 119.49
+  },
+  {
+    "id": 32,
+    "title": "Smart Home Camera",
+    "description": "Indoor smart camera with motion alerts and night vision.",
+    "price": 69.49
+  },
+  {
+    "id": 33,
+    "title": "Smart Doorbell",
+    "description": "Video doorbell with two-way audio and mobile notifications.",
+    "price": 134.49
+  },
+  {
+    "id": 34,
+    "title": "Smart Plug",
+    "description": "Wi-Fi smart plug with timer control and remote power switching.",
+    "price": 21.49
+  },
+  {
+    "id": 35,
+    "title": "Smart LED Bulb",
+    "description": "Color-changing smart LED bulb controlled through a mobile app.",
+    "price": 18.49
+  },
+  {
+    "id": 36,
+    "title": "Fitness Tracker",
+    "description": "Slim fitness tracker with step counting, sleep tracking and notifications.",
+    "price": 79.49
+  },
+  {
+    "id": 37,
+    "title": "VR Headset",
+    "description": "Standalone VR headset for immersive games and virtual experiences.",
+    "price": 349.49
+  },
+  {
+    "id": 38,
+    "title": "Game Controller",
+    "description": "Wireless game controller compatible with PC and Android devices.",
+    "price": 64.49
+  },
+  {
+    "id": 39,
+    "title": "Charging Station",
+    "description": "Desktop charging station for multiple phones, earbuds and accessories.",
+    "price": 47.49
+  },
+  {
+    "id": 40,
+    "title": "Cable Organizer",
+    "description": "Reusable cable organizer set for desks, chargers and travel bags.",
+    "price": 11.49
+  },
+  {
+    "id": 41,
+    "title": "Screen Cleaning Kit",
+    "description": "Cleaning kit for monitors, laptops, tablets and smartphone screens.",
+    "price": 15.49
+  },
+  {
+    "id": 42,
+    "title": "Laptop Sleeve",
+    "description": "Protective laptop sleeve with soft lining and water-resistant exterior.",
+    "price": 32.49
+  },
+  {
+    "id": 43,
+    "title": "Tablet Keyboard Case",
+    "description": "Protective tablet case with detachable Bluetooth keyboard.",
+    "price": 58.49
+  },
+  {
+    "id": 44,
+    "title": "Bluetooth Keyboard",
+    "description": "Compact Bluetooth keyboard for tablets, phones and laptops.",
+    "price": 42.49
+  },
+  {
+    "id": 45,
+    "title": "Numeric Keypad",
+    "description": "Wireless numeric keypad for spreadsheets, accounting and data entry.",
+    "price": 26.49
+  },
+  {
+    "id": 46,
+    "title": "Document Scanner",
+    "description": "Compact document scanner for receipts, contracts and office paperwork.",
+    "price": 199.49
+  },
+  {
+    "id": 47,
+    "title": "Label Printer",
+    "description": "Portable thermal label printer for home and small office organization.",
+    "price": 89.49
+  },
+  {
+    "id": 48,
+    "title": "Photo Printer",
+    "description": "Compact photo printer for quick prints directly from a smartphone.",
+    "price": 129.49
+  },
+  {
+    "id": 49,
+    "title": "Surge Protector",
+    "description": "Power strip with surge protection and multiple charging ports.",
+    "price": 37.49
+  },
+  {
+    "id": 50,
+    "title": "Universal Travel Adapter",
+    "description": "Universal travel adapter with USB-C and USB-A charging ports.",
+    "price": 33.49
+  },
+  {
+    "id": 51,
+    "title": "Car Phone Mount",
+    "description": "Adjustable car phone mount with secure grip and easy rotation.",
+    "price": 22.49
+  },
+  {
+    "id": 52,
+    "title": "Car Charger",
+    "description": "Dual-port car charger with fast USB-C charging support.",
+    "price": 19.49
+  },
+  {
+    "id": 53,
+    "title": "Bluetooth Receiver",
+    "description": "Bluetooth audio receiver for speakers, headphones and car systems.",
+    "price": 28.49
+  },
+  {
+    "id": 54,
+    "title": "Audio Interface",
+    "description": "Compact USB audio interface for microphones, instruments and recording.",
+    "price": 149.49
+  },
+  {
+    "id": 55,
+    "title": "Studio Headphones",
+    "description": "Closed-back studio headphones for monitoring, editing and music production.",
+    "price": 119.79
+  },
+  {
+    "id": 56,
+    "title": "Desktop Speakers",
+    "description": "Compact desktop speakers with clear stereo sound for work and entertainment.",
+    "price": 72.79
+  },
+  {
+    "id": 57,
+    "title": "Monitor Light Bar",
+    "description": "Screen-mounted light bar that illuminates the desk without glare.",
+    "price": 46.79
+  },
+  {
+    "id": 58,
+    "title": "Wireless Presenter",
+    "description": "Wireless presentation remote with slide controls and laser pointer.",
+    "price": 31.79
+  },
+  {
+    "id": 59,
+    "title": "Portable Battery Tester",
+    "description": "Small digital tester for checking common household batteries.",
+    "price": 17.79
+  },
+  {
+    "id": 60,
+    "title": "USB Desk Fan",
+    "description": "Quiet USB-powered desk fan with adjustable speed and compact size.",
+    "price": 23.79
+  }
+]
