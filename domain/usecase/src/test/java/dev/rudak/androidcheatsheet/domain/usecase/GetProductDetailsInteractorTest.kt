@@ -32,10 +32,10 @@ class GetProductDetailsInteractorTest {
             title = "iPhone 16",
             description = "Apple smartphone",
             price = 999.0,
-            category = Category(
-                id = 10L,
-                name = "Smartphones",
-            ),
+//            category = Category(
+//                id = 10L,
+//                name = "Smartphones",
+//            ),
             isFavorite = false,
         )
 
@@ -45,10 +45,10 @@ class GetProductDetailsInteractorTest {
                 title = "Samsung Galaxy",
                 description = "Android smartphone",
                 price = 799.0,
-                category = Category(
-                    id = 10L,
-                    name = "Smartphones",
-                ),
+//                category = Category(
+//                    id = 10L,
+//                    name = "Smartphones",
+//                ),
                 isFavorite = false,
             )
         )

@@ -2,6 +2,7 @@ package dev.rudak.androidcheatsheet.feature.mvi.presentation.actor
 
 import dev.rudak.androidcheatsheet.domain.model.shop.Category
 import dev.rudak.androidcheatsheet.domain.model.shop.Product
+import dev.rudak.androidcheatsheet.domain.model.shop.ProductsPage
 import dev.rudak.androidcheatsheet.domain.usecase.preferences.SetShowOnlyFavoritesUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsWithErrorUseCase
@@ -34,23 +35,42 @@ class MviActorTest {
     @Test
     fun `GIVEN LoadProducts command WHEN execute THEN return ProductsLoaded event`() = runTest {
 
+        val page = 1
+        val pageSize = 20
+
         val products = listOf(
             Product(
                 id = 1L,
                 title = "Phone",
                 description = "Description",
                 price = 999.0,
-                category = Category(
-                    id = 1L,
-                    name = "Smartphones",
-                ),
+//                category = Category(
+//                    id = 1L,
+//                    name = "Smartphones",
+//                ),
                 isFavorite = false,
             )
         )
 
-        coEvery { getProductsUseCase() } returns products
+        val productsPage = ProductsPage(
+            products = products,
+            currentPage = 1,
+            totalPages = 5,
+        )
 
-        val event = actor.execute(MviCommand.LoadProducts)
+        coEvery {
+            getProductsUseCase(
+                page = page,
+                pageSize = pageSize,
+            )
+        } returns productsPage
+
+        val event = actor.execute(
+            MviCommand.LoadProducts(
+                page = page,
+                pageSize = pageSize,
+            )
+        )
 
         assertTrue(event is MviEvent.ProductsLoaded)
 
@@ -58,9 +78,14 @@ class MviActorTest {
 
         assertEquals(1, loadedEvent.products.size)
         assertEquals(1L, loadedEvent.products.first().id)
+        assertEquals(1, loadedEvent.currentPage)
+        assertEquals(5, loadedEvent.totalPages)
 
         coVerify(exactly = 1) {
-            getProductsUseCase()
+            getProductsUseCase(
+                page = page,
+                pageSize = pageSize,
+            )
         }
     }
 }

@@ -19,11 +19,19 @@ class MviReducerTest {
 
         val result = reducer.reduce(
             state = initialState,
-            event = MviEvent.LoadProducts,
+            event = MviEvent.LoadProducts(
+                page = 1,
+            ),
         )
 
         Assert.assertTrue(result.state.isLoading)
         Assert.assertNull(result.state.errorMessage)
-        Assert.assertEquals(MviCommand.LoadProducts, result.command)
+        Assert.assertEquals(
+            MviCommand.LoadProducts(
+                page = 1,
+                pageSize = 10,
+            ),
+            result.command,
+        )
     }
 }

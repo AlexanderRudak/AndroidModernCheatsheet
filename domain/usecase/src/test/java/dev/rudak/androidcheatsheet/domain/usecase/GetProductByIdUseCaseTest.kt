@@ -28,10 +28,10 @@ class GetProductByIdUseCaseTest {
             title = "iPhone 16",
             description = "Apple smartphone",
             price = 999.0,
-            category = Category(
-                id = 10L,
-                name = "Smartphones",
-            ),
+//            category = Category(
+//                id = 10L,
+//                name = "Smartphones",
+//            ),
             isFavorite = false,
         )
 
