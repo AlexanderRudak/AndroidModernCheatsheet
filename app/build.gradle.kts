@@ -1,6 +1,22 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+}
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+
+    if (file.exists()) {
+        file.inputStream().use(::load)
+    }
+}
+
+fun signingProperty(name: String): String {
+    return System.getenv(name)
+        ?: localProperties.getProperty(name)
+        ?: error("Signing property '$name' is not configured")
 }
 
 android {
@@ -21,9 +37,23 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("appSigning") {
+            storeFile = rootProject.file(signingProperty("KEYSTORE_PATH"))
+            storePassword = signingProperty("KEYSTORE_PASSWORD")
+            keyAlias = signingProperty("KEY_ALIAS")
+            keyPassword = signingProperty("KEY_PASSWORD")
+        }
+    }
+
     buildTypes {
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("appSigning")
+        }
+
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("appSigning")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
