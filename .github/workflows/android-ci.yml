@@ -23,6 +23,12 @@ on:
         default: true
         type: boolean
 
+      # Что необходимо проверить тестировщику
+      test_description:
+        description: 'What should be tested?'
+        required: true
+        type: string
+
 # Workflow имеет только право читать код репозитория
 permissions:
   contents: read
@@ -32,8 +38,9 @@ jobs:
     # GitHub создаёт временный Linux runner
     runs-on: ubuntu-latest
 
-    # Эти переменные увидит Gradle через System.getenv(...)
-    # Пароли и alias берём из GitHub Secrets
+    # Переменные окружения для подписи APK.
+    # Gradle читает их через System.getenv(...),
+    # секретные значения хранятся в GitHub Secrets.
     env:
       KEYSTORE_PATH: keystore/android-modern-cheatsheet.jks
       KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -90,6 +97,14 @@ jobs:
         if: ${{ inputs.build_type == 'release' }}
         run: ./gradlew assembleRelease
 
+      # Читаем versionName из app/build.gradle.kts.
+      # Это единственный источник отображаемой версии приложения.
+      - name: Read app version
+        id: app_version
+        run: |
+          VERSION_NAME=$(grep 'versionName =' app/build.gradle.kts | head -1 | sed -E 's/.*versionName = "([^"]+)".*/\1/')
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+
       # Загружаем debug APK как отдельный файл
       - name: Upload Debug APK
         id: upload_debug_apk
@@ -100,11 +115,15 @@ jobs:
           archive: false
           if-no-files-found: error
 
-      # Добавляем ссылку на debug APK в Summary
+      # Добавляем информацию и ссылку на debug APK в Summary
       - name: Add Debug APK link to summary
         if: ${{ inputs.build_type == 'debug' }}
         run: |
           echo "## APK" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Build:** Debug" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Version:** ${{ steps.app_version.outputs.version_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Build number:** #${{ github.run_number }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "[Download app-debug.apk](${{ steps.upload_debug_apk.outputs.artifact-url }})" >> "$GITHUB_STEP_SUMMARY"
 
       # Загружаем release APK как отдельный файл
@@ -117,28 +136,47 @@ jobs:
           archive: false
           if-no-files-found: error
 
-      # Добавляем ссылку на release APK в Summary
+      # Добавляем информацию и ссылку на release APK в Summary
       - name: Add Release APK link to summary
         if: ${{ inputs.build_type == 'release' }}
         run: |
           echo "## APK" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Build:** Release" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Version:** ${{ steps.app_version.outputs.version_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "**Build number:** #${{ github.run_number }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "[Download app-release.apk](${{ steps.upload_release_apk.outputs.artifact-url }})" >> "$GITHUB_STEP_SUMMARY"
-          
 
-      # Отправляем debug APK в Telegram
+      # Отправляем debug APK тестировщикам в Telegram
       - name: Send Debug APK to Telegram
         if: ${{ inputs.build_type == 'debug' }}
+        env:
+          TEST_DESCRIPTION: ${{ inputs.test_description }}
         run: |
+          CAPTION=$(printf 'AndroidModernCheatsheet\n\nBuild: Debug\nVersion: %s\nBuild number: #%s\n\nЧто тестировать:\n%s' \
+            "${{ steps.app_version.outputs.version_name }}" \
+            "${{ github.run_number }}" \
+            "$TEST_DESCRIPTION")
+
           curl -f \
             -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -F document=@app/build/outputs/apk/debug/app-debug.apk \
+            -F caption="$CAPTION" \
             "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument"
 
-      # Отправляем release APK в Telegram
+      # Отправляем release APK тестировщикам в Telegram
       - name: Send Release APK to Telegram
         if: ${{ inputs.build_type == 'release' }}
+        env:
+          TEST_DESCRIPTION: ${{ inputs.test_description }}
         run: |
+          CAPTION=$(printf 'AndroidModernCheatsheet\n\nBuild: Release\nVersion: %s\nBuild number: #%s\n\nЧто тестировать:\n%s' \
+            "${{ steps.app_version.outputs.version_name }}" \
+            "${{ github.run_number }}" \
+            "$TEST_DESCRIPTION")
+
           curl -f \
             -F chat_id="${{ secrets.TELEGRAM_CHAT_ID }}" \
             -F document=@app/build/outputs/apk/release/app-release.apk \
+            -F caption="$CAPTION" \
             "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument"
