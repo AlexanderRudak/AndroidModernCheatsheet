@@ -70,23 +70,29 @@ jobs:
           echo "$KEYSTORE_BASE64" | base64 --decode > keystore/android-modern-cheatsheet.jks
           chmod 600 keystore/android-modern-cheatsheet.jks
 
-      # Выполняется только если разработчик включил Run unit tests
-      - name: Run unit tests
-        if: ${{ inputs.run_tests }}
+      # Unit-тесты для debug
+      - name: Run Debug unit tests
+        if: ${{ inputs.run_tests && inputs.build_type == 'debug' }}
         run: ./gradlew testDebugUnitTest
 
-      # Собираем выбранный разработчиком вариант.
-      # И debug, и release используют appSigning из app/build.gradle.kts.
+      # Unit-тесты для release
+      - name: Run Release unit tests
+        if: ${{ inputs.run_tests && inputs.build_type == 'release' }}
+        run: ./gradlew testReleaseUnitTest
+
+      # Собираем debug
       - name: Build Debug
         if: ${{ inputs.build_type == 'debug' }}
         run: ./gradlew assembleDebug
 
+      # Собираем release
       - name: Build Release
         if: ${{ inputs.build_type == 'release' }}
         run: ./gradlew assembleRelease
 
-      # Загружаем APK непосредственно как файл, без ZIP.
+      # Загружаем debug APK как отдельный файл
       - name: Upload Debug APK
+        id: upload_debug_apk
         if: ${{ inputs.build_type == 'debug' }}
         uses: actions/upload-artifact@v7
         with:
@@ -94,10 +100,26 @@ jobs:
           archive: false
           if-no-files-found: error
 
+      # Добавляем ссылку на debug APK в Summary
+      - name: Add Debug APK link to summary
+        if: ${{ inputs.build_type == 'debug' }}
+        run: |
+          echo "## APK" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download app-debug.apk](${{ steps.upload_debug_apk.outputs.artifact-url }})" >> "$GITHUB_STEP_SUMMARY"
+
+      # Загружаем release APK как отдельный файл
       - name: Upload Release APK
+        id: upload_release_apk
         if: ${{ inputs.build_type == 'release' }}
         uses: actions/upload-artifact@v7
         with:
           path: app/build/outputs/apk/release/app-release.apk
           archive: false
           if-no-files-found: error
+
+      # Добавляем ссылку на release APK в Summary
+      - name: Add Release APK link to summary
+        if: ${{ inputs.build_type == 'release' }}
+        run: |
+          echo "## APK" >> "$GITHUB_STEP_SUMMARY"
+          echo "[Download app-release.apk](${{ steps.upload_release_apk.outputs.artifact-url }})" >> "$GITHUB_STEP_SUMMARY"
