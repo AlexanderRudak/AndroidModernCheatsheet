@@ -14,6 +14,7 @@ val featureMvvmModule = module {
             observeShowOnlyFavoritesUseCase = get(),
             setShowOnlyFavoritesUseCase = get(),
             toggleFavoriteUseCase = get(),
+            analyticController = get(),
         )
     }
     viewModel { params ->

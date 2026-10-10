@@ -2,6 +2,11 @@ package dev.rudak.androidcheatsheet.feature.mvvm.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticEvent
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticEventKey
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticEventName
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticSenderController
+import dev.rudak.androidcheatsheet.core.analytics.firebase.AnalyticEventValue
 import dev.rudak.androidcheatsheet.core.common.result.runSuspendCatching
 import dev.rudak.androidcheatsheet.domain.model.shop.Product
 import dev.rudak.androidcheatsheet.domain.usecase.preferences.ObserveShowOnlyFavoritesUseCase
@@ -27,6 +32,7 @@ class MvvmViewModel(
     private val observeShowOnlyFavoritesUseCase: ObserveShowOnlyFavoritesUseCase,
     private val setShowOnlyFavoritesUseCase: SetShowOnlyFavoritesUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
+    private val analyticController: AnalyticSenderController,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MvvmUiState())
@@ -210,6 +216,25 @@ class MvvmViewModel(
     }
 
     fun toggleFavorite(productId: Long) {
+        val product = productsFlow.value
+            .firstOrNull { it.id == productId } ?: return
+
+        val action = if (product.isFavorite) {
+            AnalyticEventValue.REMOVE
+        } else {
+            AnalyticEventValue.ADD
+        }
+
+        analyticController.sendEvent(
+            AnalyticEvent(
+                name = AnalyticEventName.FAVORITE_CLICKED,
+                params = mapOf(
+                    AnalyticEventKey.PRODUCT_ID to productId,
+                    AnalyticEventKey.ACTION to action,
+                )
+            )
+        )
+
         viewModelScope.launch {
             runSuspendCatching {
                 toggleFavoriteUseCase(productId)
@@ -238,6 +263,14 @@ class MvvmViewModel(
     }
 
     fun onProductClick(productId: Long) {
+        analyticController.sendEvent(
+            AnalyticEvent(
+                name = AnalyticEventName.PRODUCT_CLICKED,
+                params = mapOf(
+                    AnalyticEventKey.PRODUCT_ID to productId
+                )
+            )
+        )
         viewModelScope.launch {
             _news.emit(
                 MvvmNews.NavigateToDetails(productId),

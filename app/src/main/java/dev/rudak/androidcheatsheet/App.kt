@@ -8,6 +8,7 @@ import dev.rudak.androidcheatsheet.data.repository.di.dataRepositoryModule
 import dev.rudak.androidcheatsheet.domain.usecase.di.domainUseCaseModule
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.di.featureMviModule
 import dev.rudak.androidcheatsheet.feature.mvvm.di.featureMvvmModule
+import dev.rudak.androidcheatsheet.core.analytics.di.analyticsModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -27,6 +28,7 @@ class App : Application() {
                 domainUseCaseModule,
                 featureMvvmModule,
                 featureMviModule,
+                analyticsModule
             )
         }
     }

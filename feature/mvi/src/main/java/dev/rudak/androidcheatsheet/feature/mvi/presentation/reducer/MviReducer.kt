@@ -26,10 +26,12 @@ class MviReducer {
                             isLoading = true,
                             errorMessage = null,
                         ),
-                        command = MviCommand.LoadProducts(
-                            page = event.page,
-                            pageSize = PAGE_SIZE,
-                        ),
+                        commands = listOf(
+                            MviCommand.LoadProducts(
+                                page = event.page,
+                                pageSize = PAGE_SIZE,
+                            ),
+                        )
                     )
                 }
             }
@@ -40,10 +42,12 @@ class MviReducer {
                         isLoading = true,
                         errorMessage = null,
                     ),
-                    command = MviCommand.LoadProductsWithError(
-                        page = FIRST_PAGE,
-                        pageSize = PAGE_SIZE,
-                    ),
+                    commands = listOf(
+                        MviCommand.LoadProductsWithError(
+                            page = FIRST_PAGE,
+                            pageSize = PAGE_SIZE,
+                        ),
+                    )
                 )
             }
 
@@ -78,9 +82,14 @@ class MviReducer {
             is MviEvent.FavoriteClicked -> {
                 ReduceResult(
                     state = state,
-                    command = MviCommand.ToggleFavorite(
-                        productId = event.productId,
-                    ),
+                    commands = listOf(
+                        MviCommand.ToggleFavorite(
+                            productId = event.productId,
+                        ),
+                        MviCommand.Analytic.FavoriteClicked(
+                            productId = event.productId,
+                        ),
+                    )
                 )
             }
 
@@ -105,14 +114,23 @@ class MviReducer {
                     state = state.copy(
                         showOnlyFavorites = event.value,
                     ),
-                    command = MviCommand.SetShowOnlyFavorites(
-                        value = event.value,
-                    ),
+                    commands = listOf(
+                        MviCommand.SetShowOnlyFavorites(
+                            value = event.value,
+                        ),
+                    )
                 )
             }
 
             is MviEvent.ProductClicked -> {
-                ReduceResult(state = state)
+                ReduceResult(
+                    state = state,
+                    commands = listOf(
+                        MviCommand.Analytic.ProductClicked(
+                            productId = event.productId,
+                        ),
+                    ),
+                )
             }
 
             is MviEvent.ShowOnlyFavoritesSaved -> {

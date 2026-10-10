@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.services)
 }
 
 val localProperties = Properties().apply {
@@ -14,9 +15,10 @@ val localProperties = Properties().apply {
 }
 
 fun signingProperty(name: String): String {
-    return System.getenv(name)
-        ?: localProperties.getProperty(name)
-        ?: error("Signing property '$name' is not configured")
+    return localProperties.getProperty(name)
+        //System.getenv(name)
+        //?: localProperties.getProperty(name)
+        //?: error("Signing property '$name' is not configured")
 }
 
 android {
@@ -95,6 +97,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+
+    //implementation(platform(libs.firebase.bom))
+    //implementation(libs.firebase.analytics)
+    implementation(project(":core:analytics"))
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

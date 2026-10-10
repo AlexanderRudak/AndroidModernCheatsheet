@@ -2,21 +2,36 @@ package dev.rudak.androidcheatsheet.feature.mvi.presentation.command
 
 sealed interface MviCommand {
 
+    sealed interface Action : MviCommand
+
     data class LoadProducts(
         val page: Int,
         val pageSize: Int,
-    ) : MviCommand
+    ) : Action
 
     data class LoadProductsWithError(
         val page: Int,
         val pageSize: Int,
-    ) : MviCommand
+    ) : Action
 
     data class ToggleFavorite(
         val productId: Long,
-    ) : MviCommand
+    ) : Action
 
     data class SetShowOnlyFavorites(
         val value: Boolean,
-    ) : MviCommand
+    ) : Action
+
+
+    sealed interface Analytic : MviCommand {
+
+        data class ProductClicked(
+            val productId: Long,
+        ) : Analytic
+
+        data class FavoriteClicked(
+            val productId: Long,
+        ) : Analytic
+
+    }
 }

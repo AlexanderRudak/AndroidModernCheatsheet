@@ -1,33 +1,29 @@
 package dev.rudak.androidcheatsheet.feature.mvi.presentation.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetPagedProductsUseCase
 import dev.rudak.androidcheatsheet.feature.mvi.core.BaseMviViewModel
 import dev.rudak.androidcheatsheet.feature.mvi.core.ReduceResult
-import dev.rudak.androidcheatsheet.feature.mvi.presentation.actor.MviActor
+import dev.rudak.androidcheatsheet.feature.mvi.core.MviActor
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.command.MviCommand
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.event.MviEvent
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.mapper.toUiModel
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.news.MviNews
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.reducer.MviReducer
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.state.MviState
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.merge
 
 class MviViewModel(
     private val reducer: MviReducer,
-    private val actor: MviActor,
+    private val actors: List<MviActor<MviCommand, MviEvent>>,
     private val getPagedProductsUseCase: GetPagedProductsUseCase,
 ) : BaseMviViewModel<MviState, MviEvent, MviCommand, MviNews>(
     initialState = MviState(),
+    actors = actors,
 ) {
 
     init {
@@ -53,11 +49,21 @@ class MviViewModel(
         )
     }
 
-    override suspend fun execute(
+    /*override suspend fun execute(
         command: MviCommand,
     ): MviEvent {
         return actor.execute(command)
-    }
+    }*/
+
+    /*override fun process(
+        commands: Flow<MviCommand>,
+    ): Flow<MviEvent> {
+        return actors
+            .map { actor ->
+                actor.process(commands)
+            }
+            .merge()
+    }*/
 
     override fun handleEvent(event: MviEvent) {
         when (event) {

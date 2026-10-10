@@ -30,6 +30,7 @@ dependencies {
 
     implementation(project(":core:ui"))
     implementation(project(":core:common"))
+    implementation(project(":core:analytics"))
 
     implementation(project(":domain:model"))
     implementation(project(":domain:usecase"))

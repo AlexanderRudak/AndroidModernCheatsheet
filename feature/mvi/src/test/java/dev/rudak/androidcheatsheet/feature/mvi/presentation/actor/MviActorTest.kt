@@ -1,6 +1,5 @@
 package dev.rudak.androidcheatsheet.feature.mvi.presentation.actor
 
-import dev.rudak.androidcheatsheet.domain.model.shop.Category
 import dev.rudak.androidcheatsheet.domain.model.shop.Product
 import dev.rudak.androidcheatsheet.domain.model.shop.ProductsPage
 import dev.rudak.androidcheatsheet.domain.usecase.preferences.SetShowOnlyFavoritesUseCase
@@ -25,7 +24,7 @@ class MviActorTest {
     private val toggleFavoriteUseCase = mockk<ToggleFavoriteUseCase>()
     private val setShowOnlyFavoritesUseCase = mockk<SetShowOnlyFavoritesUseCase>()
 
-    private val actor = MviActor(
+    private val actor = dev.rudak.androidcheatsheet.feature.mvi.core.MviActor(
         getProductsUseCase = getProductsUseCase,
         getProductsWithErrorUseCase = getProductsWithErrorUseCase,
         toggleFavoriteUseCase = toggleFavoriteUseCase,

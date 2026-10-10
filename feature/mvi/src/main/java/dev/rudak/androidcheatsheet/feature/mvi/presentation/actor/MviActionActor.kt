@@ -6,41 +6,41 @@ import dev.rudak.androidcheatsheet.domain.usecase.preferences.SetShowOnlyFavorit
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsWithErrorUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.ToggleFavoriteUseCase
+import dev.rudak.androidcheatsheet.feature.mvi.core.MviActor
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.command.MviCommand
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.event.MviEvent
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.mapper.toUiModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.map
 
-class MviActor(
+class MviActionActor(
     private val getProductsUseCase: GetProductsUseCase,
     private val getProductsWithErrorUseCase: GetProductsWithErrorUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase,
     private val setShowOnlyFavoritesUseCase: SetShowOnlyFavoritesUseCase,
-) {
+) : MviActor<MviCommand, MviEvent> {
 
-    suspend fun execute(command: MviCommand): MviEvent {
-        return when (command) {
-            is MviCommand.LoadProducts -> {
-                loadProducts(
-                    page = command.page,
-                    pageSize = command.pageSize,
-                )
-            }
+    override fun process(
+        commands: Flow<MviCommand>,
+    ): Flow<MviEvent> {
+        return commands
+            .filterIsInstance<MviCommand.Action>()
+            .map { command ->
+                when (command) {
+                    is MviCommand.LoadProducts ->
+                        loadProducts(command.page, command.pageSize)
 
-            is MviCommand.LoadProductsWithError -> {
-                loadProductsWithError(
-                    page = command.page,
-                    pageSize = command.pageSize,
-                )
-            }
+                    is MviCommand.LoadProductsWithError ->
+                        loadProductsWithError(command.page, command.pageSize)
 
-            is MviCommand.ToggleFavorite -> {
-                toggleFavorite(command.productId)
-            }
+                    is MviCommand.ToggleFavorite ->
+                        toggleFavorite(command.productId)
 
-            is MviCommand.SetShowOnlyFavorites -> {
-                setShowOnlyFavorites(command.value)
+                    is MviCommand.SetShowOnlyFavorites ->
+                        setShowOnlyFavorites(command.value)
+                }
             }
-        }
     }
 
     private suspend fun loadProducts(
