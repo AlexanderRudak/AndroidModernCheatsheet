@@ -17,7 +17,7 @@ fun AppNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Destinations.PRODUCTS_MVVM,
+        startDestination = Destinations.PRODUCTS_MVI,
     ) {
 
         composable(Destinations.PRODUCTS_MVVM) {

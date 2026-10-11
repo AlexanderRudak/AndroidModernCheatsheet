@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetPagedProductsUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.ObserveFavoriteIdsUseCase
 import dev.rudak.androidcheatsheet.feature.mvi.core.BaseMviViewModel
 import dev.rudak.androidcheatsheet.feature.mvi.core.ReduceResult
 import dev.rudak.androidcheatsheet.feature.mvi.core.MviActor
@@ -14,6 +15,8 @@ import dev.rudak.androidcheatsheet.feature.mvi.presentation.news.MviNews
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.reducer.MviReducer
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.state.MviState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 
@@ -21,6 +24,7 @@ class MviViewModel(
     private val reducer: MviReducer,
     private val actors: List<MviActor<MviCommand, MviEvent>>,
     private val getPagedProductsUseCase: GetPagedProductsUseCase,
+    private val observeFavoriteIdsUseCase: ObserveFavoriteIdsUseCase,
 ) : BaseMviViewModel<MviState, MviEvent, MviCommand, MviNews>(
     initialState = MviState(),
     actors = actors,
@@ -30,6 +34,11 @@ class MviViewModel(
         onEvent(MviEvent.LoadProducts(page = 1))
     }
 
+    private val favoriteIds =
+        observeFavoriteIdsUseCase()
+            .map { ids -> ids.toSet() }
+            .distinctUntilChanged()
+
     val pagedProducts =
         getPagedProductsUseCase()
             .map { pagingData ->
@@ -38,6 +47,13 @@ class MviViewModel(
                 }
             }
             .cachedIn(viewModelScope)
+            .combine(favoriteIds) { pagingData, ids ->
+                pagingData.map { product ->
+                    product.copy(
+                        isFavorite = product.id in ids,
+                    )
+                }
+            }
 
     override fun reduce(
         state: MviState,

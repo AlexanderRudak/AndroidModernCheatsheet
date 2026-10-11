@@ -6,7 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.mapNotNull
 import dev.rudak.androidcheatsheet.core.analytics.AnalyticEvent
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticEventKey
+import dev.rudak.androidcheatsheet.core.analytics.AnalyticEventName
 import dev.rudak.androidcheatsheet.core.analytics.AnalyticSenderController
+import dev.rudak.androidcheatsheet.core.analytics.firebase.AnalyticEventValue
 import dev.rudak.androidcheatsheet.feature.mvi.core.MviActor
 
 class MviAnalyticActor(
@@ -23,9 +26,9 @@ class MviAnalyticActor(
                     is MviCommand.Analytic.ProductClicked -> {
                         analyticController.sendEvent(
                             AnalyticEvent(
-                                name = "product_clicked",
+                                name = AnalyticEventName.PRODUCT_CLICKED,
                                 params = mapOf(
-                                    "product_id" to command.productId,
+                                    AnalyticEventKey.PRODUCT_ID to command.productId,
                                 ),
                             ),
                         )
@@ -34,9 +37,14 @@ class MviAnalyticActor(
                     is MviCommand.Analytic.FavoriteClicked -> {
                         analyticController.sendEvent(
                             AnalyticEvent(
-                                name = "favorite_clicked",
+                                name = AnalyticEventName.FAVORITE_CLICKED,
                                 params = mapOf(
-                                    "product_id" to command.productId,
+                                    AnalyticEventKey.PRODUCT_ID to command.productId,
+                                    AnalyticEventKey.ACTION to if (command.isFavorite) {
+                                        AnalyticEventValue.REMOVE
+                                    } else {
+                                        AnalyticEventValue.ADD
+                                    },
                                 ),
                             ),
                         )

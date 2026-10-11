@@ -88,6 +88,7 @@ class MviReducer {
                         ),
                         MviCommand.Analytic.FavoriteClicked(
                             productId = event.productId,
+                            isFavorite = event.isFavorite,
                         ),
                     )
                 )

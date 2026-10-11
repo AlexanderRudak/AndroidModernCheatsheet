@@ -23,6 +23,8 @@ interface ProductRepository {
 
     suspend fun toggleFavorite(productId: Long)
 
+    fun observeFavoriteIds(): Flow<List<Long>>
+
     suspend fun getRecommendedProducts(productId: Long): List<Product>
 
     suspend fun getProductDetailsData(productId: Long): ProductDetailsData

@@ -47,7 +47,7 @@ fun PagedProductsDemoContent(
     onShowOnlyFavoritesChange: (Boolean) -> Unit,
     onErrorClick: () -> Unit,
     onProductClick: (Long) -> Unit,
-    onFavoriteClick: (Long) -> Unit,
+    onFavoriteClick: (productId: Long, isFavorite: Boolean) -> Unit,
 ) {
     val refreshState = products.loadState.refresh
     val appendState = products.loadState.append
@@ -194,7 +194,7 @@ fun PagedProductsDemoContent(
 private fun PagedProductDemoCard(
     product: ProductCardUiModel,
     onProductClick: (Long) -> Unit,
-    onFavoriteClick: (Long) -> Unit,
+    onFavoriteClick: (productId: Long, isFavorite: Boolean) -> Unit,
 ) {
     Card(
         modifier = Modifier
@@ -247,7 +247,7 @@ private fun PagedProductDemoCard(
                     .size(48.dp)
                     .testTag("favorite_button_${product.id}"),
                 onClick = {
-                    onFavoriteClick(product.id)
+                    onFavoriteClick(product.id, product.isFavorite)
                 },
             ) {
                 Icon(

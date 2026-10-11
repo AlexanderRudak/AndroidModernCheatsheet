@@ -8,6 +8,7 @@ import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductDetailsInteract
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsWithErrorUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetRecommendedProductsUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.ObserveFavoriteIdsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.ToggleFavoriteUseCase
 import org.koin.dsl.module
 
@@ -42,6 +43,12 @@ val domainUseCaseModule = module {
 
     single {
         ToggleFavoriteUseCase(
+            productRepository = get(),
+        )
+    }
+
+    factory {
+        ObserveFavoriteIdsUseCase(
             productRepository = get(),
         )
     }

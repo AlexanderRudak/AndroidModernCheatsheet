@@ -52,6 +52,7 @@ val featureMviModule = module {
             reducer = get(),
             actors = getAll(),
             getPagedProductsUseCase = get(),
+            observeFavoriteIdsUseCase = get(),
         )
     }
 

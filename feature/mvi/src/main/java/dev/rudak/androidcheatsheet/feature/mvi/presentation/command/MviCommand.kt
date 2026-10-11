@@ -31,6 +31,7 @@ sealed interface MviCommand {
 
         data class FavoriteClicked(
             val productId: Long,
+            val isFavorite: Boolean,
         ) : Analytic
 
     }

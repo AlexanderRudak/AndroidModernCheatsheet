@@ -18,6 +18,7 @@ sealed interface MviEvent {
 
     data class FavoriteClicked(
         val productId: Long,
+        val isFavorite: Boolean,
     ) : MviEvent
 
     data class ShowOnlyFavoritesChanged(

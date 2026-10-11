@@ -104,6 +104,10 @@ class ProductRepositoryImpl(
         favoriteProductLocalDataSource.toggleFavorite(productId)
     }
 
+    override fun observeFavoriteIds(): Flow<List<Long>> {
+        return favoriteProductLocalDataSource.observeFavoriteIds()
+    }
+
     override suspend fun getProductDetailsData(
         productId: Long,
     ): ProductDetailsData = coroutineScope {

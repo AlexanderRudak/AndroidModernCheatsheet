@@ -65,9 +65,12 @@ fun MviContent(
                 MviEvent.ProductClicked(productId),
             )
         },
-        onFavoriteClick = { productId ->
+        onFavoriteClick = { productId, isFavorite ->
             onEvent(
-                MviEvent.FavoriteClicked(productId),
+                MviEvent.FavoriteClicked(
+                    productId = productId,
+                    isFavorite = isFavorite,
+                ),
             )
         },
     )
