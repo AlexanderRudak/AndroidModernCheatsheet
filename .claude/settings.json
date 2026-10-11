@@ -1,0 +1,26 @@
+
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep"
+    ],
+    "ask": [
+      "Edit",
+      "Write",
+      "Bash(./gradlew *)",
+      "Bash(.\\gradlew.bat *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ],
+    "deny": [
+      "Bash(git push *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -fd*)",
+      "Bash(rm -rf *)",
+      "Bash(Remove-Item *)"
+    ]
+  }
+}
