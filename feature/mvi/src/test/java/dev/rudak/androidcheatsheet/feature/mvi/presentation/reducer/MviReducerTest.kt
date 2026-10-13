@@ -27,11 +27,13 @@ class MviReducerTest {
         Assert.assertTrue(result.state.isLoading)
         Assert.assertNull(result.state.errorMessage)
         Assert.assertEquals(
-            MviCommand.LoadProducts(
-                page = 1,
-                pageSize = 10,
+            listOf(
+                MviCommand.LoadProducts(
+                    page = 1,
+                    pageSize = 10,
+                )
             ),
-            result.command,
+            result.commands,
         )
     }
 }
