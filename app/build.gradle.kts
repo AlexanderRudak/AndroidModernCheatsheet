@@ -15,10 +15,9 @@ val localProperties = Properties().apply {
 }
 
 fun signingProperty(name: String): String {
-    return localProperties.getProperty(name)
-        //System.getenv(name)
-        //?: localProperties.getProperty(name)
-        //?: error("Signing property '$name' is not configured")
+    return System.getenv(name)
+        ?: localProperties.getProperty(name)
+        ?: error("Signing property '$name' is not configured")
 }
 
 android {
