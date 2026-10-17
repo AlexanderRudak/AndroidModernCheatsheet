@@ -24,6 +24,13 @@ on:
         default: true
         type: boolean
 
+      # Checkbox: инструментальные тесты на Android Emulator (только вручную)
+      run_instrumented_tests:
+        description: 'Run instrumented tests'
+        required: true
+        default: false
+        type: boolean
+
       # Что необходимо проверить тестировщику
       test_description:
         description: 'What should be tested?'
@@ -193,3 +200,64 @@ jobs:
             -F document=@app/build/outputs/apk/release/app-release.apk \
             -F caption="$CAPTION" \
             "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendDocument"
+
+  # Отдельный job: запускается только вручную при включённой галочке.
+  # При обычном push в master этот job пропускается.
+  instrumented-tests:
+    name: Instrumented Tests
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_instrumented_tests == true }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+
+    steps:
+      # Получаем тот же commit, для которого запущен workflow.
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Используем ту же Java и настройку Gradle, что в job build.
+      - name: Set up JDK 17
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Make Gradle Wrapper executable
+        run: chmod +x gradlew
+
+      # Debug-тесты обычно не требуют release-keystore.
+      # Но если build.gradle.kts обращается к signing secrets даже при Debug,
+      # понадобится восстановить keystore аналогично job build.
+
+      # Разрешаем аппаратное ускорение Android Emulator через KVM.
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      # Action создаёт эмулятор Android, ждёт его загрузки и запускает тесты.
+      # Запускаем все connectedDebugAndroidTest в Android-модулях проекта.
+      # Это Debug-тесты независимо от выбранного build_type для APK.
+      - name: Run instrumented tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: ./gradlew connectedDebugAndroidTest
+
+      # При падении тестов отчёты всё равно попадут в Artifacts запуска.
+      - name: Upload instrumented test reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: instrumented-test-reports
+          path: |
+            **/build/reports/androidTests/connected/**
+            **/build/outputs/androidTest-results/connected/**
+          if-no-files-found: warn
