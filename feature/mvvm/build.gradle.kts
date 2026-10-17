@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
 

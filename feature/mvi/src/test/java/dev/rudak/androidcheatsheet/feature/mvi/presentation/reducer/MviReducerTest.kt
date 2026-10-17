@@ -36,4 +36,45 @@ class MviReducerTest {
             result.commands,
         )
     }
+
+    @Test
+    fun `GIVEN state WHEN FavoriteClicked THEN return unchanged state and action with analytic command`() {
+        val initialState = MviState()
+
+        val result = reducer.reduce(
+            state = initialState,
+            event = MviEvent.FavoriteClicked(
+                productId = 5L,
+                isFavorite = false,
+            ),
+        )
+
+        Assert.assertEquals(initialState, result.state)
+        Assert.assertEquals(
+            listOf(
+                MviCommand.ToggleFavorite(productId = 5L),
+                MviCommand.Analytic.FavoriteClicked(
+                    productId = 5L,
+                    isFavorite = false,
+                ),
+            ),
+            result.commands,
+        )
+    }
+
+    @Test
+    fun `GIVEN state WHEN ProductClicked THEN return unchanged state and analytic command`() {
+        val initialState = MviState()
+
+        val result = reducer.reduce(
+            state = initialState,
+            event = MviEvent.ProductClicked(productId = 7L),
+        )
+
+        Assert.assertEquals(initialState, result.state)
+        Assert.assertEquals(
+            listOf(MviCommand.Analytic.ProductClicked(productId = 7L)),
+            result.commands,
+        )
+    }
 }

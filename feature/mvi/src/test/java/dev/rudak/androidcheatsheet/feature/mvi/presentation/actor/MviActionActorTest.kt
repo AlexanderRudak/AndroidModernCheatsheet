@@ -15,10 +15,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.toList
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 
-class MviActorTest {
+class MviActionActorTest {
 
     private val getProductsUseCase = mockk<GetProductsUseCase>()
     private val getProductsWithErrorUseCase = mockk<GetProductsWithErrorUseCase>()
@@ -72,4 +73,34 @@ class MviActorTest {
             getProductsUseCase(page = page, pageSize = pageSize)
         }
     }
+
+    @Test
+    fun `GIVEN LoadProducts failure WHEN processed THEN emit ProductsLoadingFailed event`() = runTest {
+        val page = 1
+        val pageSize = 20
+
+        coEvery {
+            getProductsUseCase(page = page, pageSize = pageSize)
+        } throws IllegalStateException("Network error")
+
+        val event = actor.process(
+            flowOf(MviCommand.LoadProducts(page = page, pageSize = pageSize))
+        ).single()
+
+        assertEquals(MviEvent.ProductsLoadingFailed("Network error"), event)
+
+        coVerify(exactly = 1) {
+            getProductsUseCase(page = page, pageSize = pageSize)
+        }
+    }
+
+    @Test
+    fun `GIVEN analytic command WHEN processed THEN emit no events`() = runTest {
+        val events = actor.process(
+            flowOf(MviCommand.Analytic.ProductClicked(productId = 5L))
+        ).toList()
+
+        assertTrue(events.isEmpty())
+    }
+
 }
