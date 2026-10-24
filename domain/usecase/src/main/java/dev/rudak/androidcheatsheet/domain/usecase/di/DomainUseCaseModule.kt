@@ -2,6 +2,7 @@ package dev.rudak.androidcheatsheet.domain.usecase.di
 
 import dev.rudak.androidcheatsheet.domain.usecase.preferences.ObserveShowOnlyFavoritesUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.preferences.SetShowOnlyFavoritesUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.ClearRecentlyViewedProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetPagedProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductByIdUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductDetailsInteractor
@@ -9,6 +10,8 @@ import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductsWithErrorUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetRecommendedProductsUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.ObserveFavoriteIdsUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.ObserveRecentlyViewedProductsUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.RecordProductViewUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.ToggleFavoriteUseCase
 import org.koin.dsl.module
 
@@ -43,6 +46,24 @@ val domainUseCaseModule = module {
 
     single {
         ToggleFavoriteUseCase(
+            productRepository = get(),
+        )
+    }
+
+    factory {
+        RecordProductViewUseCase(
+            productRepository = get(),
+        )
+    }
+
+    factory {
+        ClearRecentlyViewedProductsUseCase(
+            productRepository = get(),
+        )
+    }
+
+    factory {
+        ObserveRecentlyViewedProductsUseCase(
             productRepository = get(),
         )
     }

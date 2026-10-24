@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import dev.rudak.androidcheatsheet.feature.mvi.presentation.screen.MviScreen
 import dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen.MvvmScreen
 import dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen.ProductDetailsScreen
+import dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen.RecentlyViewedScreen
 
 @Composable
 fun AppNavHost() {
@@ -17,7 +18,7 @@ fun AppNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Destinations.PRODUCTS_MVI,
+        startDestination = Destinations.PRODUCTS_MVVM,
     ) {
 
         composable(Destinations.PRODUCTS_MVVM) {
@@ -25,6 +26,18 @@ fun AppNavHost() {
                 onNavigate = { productId ->
                     navController.navigate(Destinations.productDetails(productId))
                 },
+                onNavigateToHistory = {
+                    navController.navigate(Destinations.RECENTLY_VIEWED)
+                },
+            )
+        }
+
+        composable(Destinations.RECENTLY_VIEWED) {
+            RecentlyViewedScreen(
+                onProductClick = { productId ->
+                    navController.navigate(Destinations.productDetails(productId))
+                },
+                onBackClick = navController::popBackStack,
             )
         }
 

@@ -29,4 +29,12 @@ interface ProductRepository {
 
     suspend fun getProductDetailsData(productId: Long): ProductDetailsData
 
+    suspend fun recordProductView(productId: Long)
+
+    suspend fun getProductsByIds(ids: List<Long>): List<Product>
+
+    fun observeRecentlyViewedProducts(): Flow<List<Product>>
+
+    suspend fun clearRecentlyViewedProducts()
+
 }

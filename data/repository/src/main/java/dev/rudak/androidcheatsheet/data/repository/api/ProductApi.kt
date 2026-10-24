@@ -20,4 +20,6 @@ interface ProductApi {
     suspend fun getProductById(id: Long): ProductDto?
 
     suspend fun getRecommendedProducts(productId: Long): List<ProductDto>
+
+    suspend fun getProductsByIds(ids: List<Long>): List<ProductDto>
 }

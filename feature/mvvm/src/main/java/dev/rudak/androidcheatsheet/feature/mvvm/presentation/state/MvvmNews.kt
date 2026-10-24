@@ -6,4 +6,6 @@ sealed interface MvvmNews {
         val productId: Long,
     ) : MvvmNews
 
+    data object NavigateToHistory : MvvmNews
+
 }

@@ -16,6 +16,12 @@ interface RetrofitProductService {
     @Query("pageSize") pageSize: Int,
     ): ProductsPageDto
 
+    // Предполагаемый контракт: GET products?ids=1&ids=2. Реального бэкенда нет.
+    @GET("products")
+    suspend fun getProductsByIds(
+        @Query("ids") ids: List<Long>,
+    ): List<ProductDto>
+
     @GET("products/{id}")
     suspend fun getProductById(
         @Path("id") id: Long,

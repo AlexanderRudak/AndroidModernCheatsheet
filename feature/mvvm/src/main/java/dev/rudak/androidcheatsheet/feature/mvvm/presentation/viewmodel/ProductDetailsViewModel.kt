@@ -6,20 +6,29 @@ import dev.rudak.androidcheatsheet.core.common.result.runSuspendCatching
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductByIdUseCase
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetProductDetailsInteractor
 import dev.rudak.androidcheatsheet.domain.usecase.shop.GetRecommendedProductsUseCase
+import dev.rudak.androidcheatsheet.domain.usecase.shop.RecordProductViewUseCase
 import dev.rudak.androidcheatsheet.feature.mvvm.presentation.mapper.toUiModel
+import dev.rudak.androidcheatsheet.feature.mvvm.presentation.state.ProductDetailsNews
 import dev.rudak.androidcheatsheet.feature.mvvm.presentation.state.ProductDetailsUiState
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class ProductDetailsViewModel(
     private val productId: Long,
     private val getProductDetailsInteractor: GetProductDetailsInteractor,
+    private val recordProductViewUseCase: RecordProductViewUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.Loading)
     val uiState: StateFlow<ProductDetailsUiState> = _uiState.asStateFlow()
+
+    private val _news = MutableSharedFlow<ProductDetailsNews>()
+    val news = _news.asSharedFlow()
 
     init {
         loadProduct()
@@ -60,12 +69,26 @@ class ProductDetailsViewModel(
                             message = "Product not found",
                         )
                     }
+
+                    if (product != null) {
+                        recordProductView()
+                    }
                 }
                 .onFailure { throwable ->
                     _uiState.value = ProductDetailsUiState.Error(
                         message = throwable.message ?: "Unknown error",
                     )
                 }
+        }
+    }
+
+    private suspend fun recordProductView() {
+        try {
+            recordProductViewUseCase(productId)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            _news.emit(ProductDetailsNews.ShowHistorySaveError)
         }
     }
 }

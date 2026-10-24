@@ -25,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 fun MvvmScreen(
     viewModel: MvvmViewModel = koinViewModel(),
     onNavigate: (Long) -> Unit,
+    onNavigateToHistory: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -37,6 +38,10 @@ fun MvvmScreen(
             when (news) {
                 is MvvmNews.NavigateToDetails -> {
                     onNavigate(news.productId)
+                }
+
+                MvvmNews.NavigateToHistory -> {
+                    onNavigateToHistory()
                 }
 
 //                is MvvmNews.ShowMessage -> {
@@ -66,6 +71,7 @@ fun MvvmScreen(
         onProductClick = viewModel::onProductClick,
         onShowOnlyFavoritesChange = viewModel::setShowOnlyFavorites,
         onFavoriteClick = viewModel::toggleFavorite,
+        onRecentlyViewedClick = viewModel::onRecentlyViewedClick,
     )
 }
 
@@ -78,6 +84,7 @@ fun MvvmContent(
     onProductClick: (Long) -> Unit,
     onShowOnlyFavoritesChange: (Boolean) -> Unit,
     onFavoriteClick: (Long) -> Unit,
+    onRecentlyViewedClick: () -> Unit = {},
 ) {
     ProductsDemoContent(
         title = "MVVM example",
@@ -92,6 +99,7 @@ fun MvvmContent(
         onLoadNextPage = onLoadNextPage,
         onProductClick = onProductClick,
         onFavoriteClick = onFavoriteClick,
+        onRecentlyViewedClick = onRecentlyViewedClick,
     )
 }
 //

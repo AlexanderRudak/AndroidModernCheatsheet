@@ -57,4 +57,8 @@ class RetrofitProductApi(
             .filter { it.id != productId }
             .take(3)
     }
+
+    override suspend fun getProductsByIds(ids: List<Long>): List<ProductDto> {
+        return service.getProductsByIds(ids)
+    }
 }

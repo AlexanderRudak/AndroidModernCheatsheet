@@ -82,6 +82,16 @@ class FakeProductApi(
             .filter { product -> product.id != productId }
             .take(3)
     }
+
+    override suspend fun getProductsByIds(ids: List<Long>): List<ProductDto> {
+        delay(500)
+
+        val idSet = ids.toSet()
+
+        return products.filter { product ->
+            product.id in idSet
+        }
+    }
 }
 
 //class FakeProductApi : ProductApi {

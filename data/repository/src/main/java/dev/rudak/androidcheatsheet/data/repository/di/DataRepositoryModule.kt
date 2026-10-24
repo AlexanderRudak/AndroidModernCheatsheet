@@ -63,6 +63,7 @@ val dataRepositoryModule = module {
         ProductRepositoryImpl(
             productApi = get(),
             favoriteProductLocalDataSource = get(),
+            recentlyViewedLocalDataSource = get(),
         )
     }
 }

@@ -278,6 +278,12 @@ class MvvmViewModel(
         }
     }
 
+    fun onRecentlyViewedClick() {
+        viewModelScope.launch {
+            _news.emit(MvvmNews.NavigateToHistory)
+        }
+    }
+
     private companion object {
         const val FIRST_PAGE = 1
         const val PAGE_SIZE = 10

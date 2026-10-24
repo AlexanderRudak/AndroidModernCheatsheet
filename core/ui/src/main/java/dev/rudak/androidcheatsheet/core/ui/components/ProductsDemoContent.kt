@@ -19,13 +19,11 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +31,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import dev.rudak.androidcheatsheet.core.ui.R
 import dev.rudak.androidcheatsheet.core.ui.theme.FavoriteIconColor
 import dev.rudak.androidcheatsheet.core.ui.theme.ProductCardBackground
 import dev.rudak.androidcheatsheet.core.ui.theme.ProductCardBorder
@@ -55,6 +55,7 @@ fun ProductsDemoContent(
     onLoadNextPage: () -> Unit,
     onProductClick: (Long) -> Unit,
     onFavoriteClick: (Long) -> Unit,
+    onRecentlyViewedClick: () -> Unit,
 ) {
     if (errorMessage != null) {
         ErrorView(
@@ -131,23 +132,37 @@ fun ProductsDemoContent(
             }
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(bottom = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Button(
-                    modifier = Modifier.weight(1f),
+                IconButton(
+                    modifier = Modifier.size(48.dp),
                     onClick = onReloadClick,
                 ) {
-                    Text(text = "Reload")
+                    Icon(
+                        painter = painterResource(R.drawable.ic_lucide_refresh_cw),
+                        contentDescription = "Reload products",
+                    )
                 }
 
-                OutlinedButton(
-                    modifier = Modifier.weight(1f),
+                IconButton(
+                    modifier = Modifier.size(48.dp),
+                    onClick = onRecentlyViewedClick,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_lucide_history),
+                        contentDescription = "Recently viewed products",
+                    )
+                }
+
+                IconButton(
+                    modifier = Modifier.size(48.dp),
                     onClick = onErrorClick,
                 ) {
-                    Text(text = "Simulate error")
+                    Icon(
+                        painter = painterResource(R.drawable.ic_lucide_triangle_alert),
+                        contentDescription = "Simulate error",
+                    )
                 }
             }
 
