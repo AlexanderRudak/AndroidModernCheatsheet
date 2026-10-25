@@ -284,6 +284,12 @@ class MvvmViewModel(
         }
     }
 
+    fun dismissError() {
+        _uiState.update { state ->
+            state.copy(errorMessage = null)
+        }
+    }
+
     private companion object {
         const val FIRST_PAGE = 1
         const val PAGE_SIZE = 10

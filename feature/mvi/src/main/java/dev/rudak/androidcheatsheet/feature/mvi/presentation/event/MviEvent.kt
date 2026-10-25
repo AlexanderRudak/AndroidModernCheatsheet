@@ -42,4 +42,6 @@ sealed interface MviEvent {
     data class ShowOnlyFavoritesSaved(
         val value: Boolean,
     ) : MviEvent
+
+    data object ErrorDismissed : MviEvent
 }

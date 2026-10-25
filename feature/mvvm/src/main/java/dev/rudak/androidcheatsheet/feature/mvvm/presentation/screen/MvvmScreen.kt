@@ -1,6 +1,7 @@
 package dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen
 
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -32,6 +33,10 @@ fun MvvmScreen(
 //    LaunchedEffect(Unit) {
 //        viewModel.loadProducts()
 //    }
+
+    BackHandler(enabled = uiState.errorMessage != null) {
+        viewModel.dismissError()
+    }
 
     LaunchedEffect(Unit) {
         viewModel.news.collect { news ->
@@ -86,21 +91,36 @@ fun MvvmContent(
     onFavoriteClick: (Long) -> Unit,
     onRecentlyViewedClick: () -> Unit = {},
 ) {
-    ProductsDemoContent(
-        title = "MVVM example",
-        description = "Screen observes StateFlow from ViewModel.",
-        products = uiState.products,
-        showOnlyFavorites = uiState.showOnlyFavorites,
-        isLoading = uiState.isLoading,
-        errorMessage = uiState.errorMessage,
-        onShowOnlyFavoritesChange = onShowOnlyFavoritesChange,
-        onReloadClick = onRetryClick,
-        onErrorClick = onErrorClick,
-        onLoadNextPage = onLoadNextPage,
-        onProductClick = onProductClick,
-        onFavoriteClick = onFavoriteClick,
-        onRecentlyViewedClick = onRecentlyViewedClick,
-    )
+    when {
+        uiState.isLoading && uiState.products.isEmpty() -> {
+            LoadingView()
+        }
+
+        uiState.errorMessage != null -> {
+            ErrorContent(
+                message = uiState.errorMessage,
+                onRetryClick = onRetryClick,
+            )
+        }
+
+        else -> {
+            ProductsDemoContent(
+                title = "MVVM example",
+                description = "Screen observes StateFlow from ViewModel.",
+                products = uiState.products,
+                showOnlyFavorites = uiState.showOnlyFavorites,
+                isLoading = uiState.isLoading,
+                errorMessage = uiState.errorMessage,
+                onShowOnlyFavoritesChange = onShowOnlyFavoritesChange,
+                onReloadClick = onRetryClick,
+                onErrorClick = onErrorClick,
+                onLoadNextPage = onLoadNextPage,
+                onProductClick = onProductClick,
+                onFavoriteClick = onFavoriteClick,
+                onRecentlyViewedClick = onRecentlyViewedClick,
+            )
+        }
+    }
 }
 //
 //@Composable

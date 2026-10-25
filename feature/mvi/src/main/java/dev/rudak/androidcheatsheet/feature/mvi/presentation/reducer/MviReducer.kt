@@ -137,6 +137,12 @@ class MviReducer {
             is MviEvent.ShowOnlyFavoritesSaved -> {
                 ReduceResult(state = state)
             }
+
+            MviEvent.ErrorDismissed -> {
+                ReduceResult(
+                    state = state.copy(errorMessage = null)
+                )
+            }
         }
     }
 
