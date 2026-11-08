@@ -5,6 +5,7 @@ object Destinations {
     const val PRODUCTS_MVVM = "products_mvvm"
     const val PRODUCTS_MVI = "products_mvi"
     const val RECENTLY_VIEWED = "recently_viewed"
+    const val DEBUG_REMOTE_CONFIG = "debug_remote_config"
 
     const val PRODUCT_DETAILS = "product_details"
     const val PRODUCT_ID = "productId"

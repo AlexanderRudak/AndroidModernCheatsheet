@@ -47,6 +47,12 @@ android {
         }
     }
 
+    sourceSets {
+        getByName("release") {
+            java.srcDir("src/release/java")
+        }
+    }
+
     buildTypes {
         getByName("debug") {
             signingConfig = signingConfigs.getByName("appSigning")
@@ -74,6 +80,7 @@ dependencies {
     implementation(project(":core:ui"))
     implementation(project(":core:network"))
     implementation(project(":core:datastore"))
+    implementation(project(":core:remoteconfig"))
 
     implementation(project(":domain:model"))
     implementation(project(":domain:repository"))

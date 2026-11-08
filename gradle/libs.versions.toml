@@ -75,6 +75,7 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-remote-config = { module = "com.google.firebase:firebase-config" }
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

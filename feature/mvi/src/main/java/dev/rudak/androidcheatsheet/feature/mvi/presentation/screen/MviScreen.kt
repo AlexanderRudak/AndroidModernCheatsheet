@@ -20,13 +20,14 @@ import org.koin.androidx.compose.koinViewModel
 fun MviScreen(
     viewModel: MviViewModel = koinViewModel(),
     onNavigateToProductDetails: (Long) -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val pagedProducts = viewModel.pagedProducts.collectAsLazyPagingItems()
 
     BackHandler(enabled = state.errorMessage != null) {
-            viewModel.onEvent(MviEvent.ErrorDismissed)
-        }
+        viewModel.onEvent(MviEvent.ErrorDismissed)
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.news.collect { news ->
@@ -44,6 +45,7 @@ fun MviScreen(
         state = state,
         pagedProducts = pagedProducts,
         onEvent = viewModel::onEvent,
+        onSettingsClick = onSettingsClick,
     )
 }
 
@@ -52,6 +54,7 @@ fun MviContent(
     state: MviState,
     pagedProducts: LazyPagingItems<ProductCardUiModel>,
     onEvent: (MviEvent) -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     when {
         state.errorMessage != null -> {
@@ -90,159 +93,8 @@ fun MviContent(
                         ),
                     )
                 },
+                onSettingsClick = onSettingsClick,
             )
         }
     }
-
-
 }
-
-//@Composable
-//fun MviContent(
-//    state: MviState,
-//    onEvent: (MviEvent) -> Unit,
-//) {
-//    ProductsDemoContent(
-//        title = "MVI example",
-//        description = "Screen sends Events, Reducer changes State, Actor executes Commands.",
-//        products = state.products,
-//        showOnlyFavorites = state.showOnlyFavorites,
-//        isLoading = state.isLoading,
-//        errorMessage = state.errorMessage,
-//        onShowOnlyFavoritesChange = { value ->
-//            onEvent(
-//                MviEvent.ShowOnlyFavoritesChanged(value),
-//            )
-//        },
-//        onReloadClick = {
-//            onEvent(
-//                MviEvent.LoadProducts(
-//                    page = 1,
-//                ),
-//            )
-//        },
-//        onErrorClick = {
-//            onEvent(MviEvent.LoadWithErrorClicked)
-//        },
-//        onLoadNextPage = {
-//            onEvent(
-//                MviEvent.LoadProducts(
-//                    page = state.currentPage + 1,
-//                ),
-//            )
-//        },
-//        onProductClick = { productId ->
-//            onEvent(
-//                MviEvent.ProductClicked(productId),
-//            )
-//        },
-//        onFavoriteClick = { productId ->
-//            onEvent(
-//                MviEvent.FavoriteClicked(productId),
-//            )
-//        },
-//    )
-//}
-
-
-
-//
-//@Composable
-//fun MviContent(
-//    state: MviState,
-//    onEvent: (MviEvent) -> Unit,
-//) {
-//    ProductsDemoContent(
-//        title = "MVI example",
-//        description = "Screen sends Events, Reducer changes State, Actor executes Commands.",
-//        products = state.products,
-//        showOnlyFavorites = state.showOnlyFavorites,
-//        isLoading = state.isLoading,
-//        errorMessage = state.errorMessage,
-//        onShowOnlyFavoritesChange = { value ->
-//            onEvent(
-//                MviEvent.ShowOnlyFavoritesChanged(value),
-//            )
-//        },
-//        onReloadClick = {
-//            onEvent(MviEvent.ReloadClicked)
-//        },
-//        onErrorClick = {
-//            onEvent(MviEvent.LoadWithErrorClicked)
-//        },
-//        onLoadNextPage = {
-//            onEvent(MviEvent.LoadNextPage)
-//        },
-//        onProductClick = { productId ->
-//            onEvent(
-//                MviEvent.ProductClicked(productId),
-//            )
-//        },
-//        onFavoriteClick = { productId ->
-//            onEvent(
-//                MviEvent.FavoriteClicked(productId),
-//            )
-//        },
-//    )
-//}
-
-//@Composable
-//fun MviContent(
-//    state: MviState,
-//    onEvent: (MviEvent) -> Unit,
-//) {
-//    when {
-//        state.isLoading -> {
-//            LoadingView()
-//        }
-//
-//        state.errorMessage != null -> {
-//            ErrorContent(
-//                message = state.errorMessage,
-//                onRetryClick = {
-//                    onEvent(MviEvent.ReloadClicked)
-//                },
-//            )
-////            Column(
-////                modifier = Modifier
-////                    .statusBarsPadding()
-////                    .padding(16.dp),
-////            ) {
-////                ErrorView(message = state.errorMessage)
-////
-////                Button(
-////                    modifier = Modifier.padding(top = 16.dp),
-////                    onClick = {
-////                        onEvent(MviEvent.ReloadClicked)
-////                    },
-////                ) {
-////                    Text(text = "Retry")
-////                }
-////            }
-//        }
-//
-//        else -> {
-//            ProductsDemoContent(
-//                title = "MVI example",
-//                description = "Screen sends Events, Reducer changes State, Actor executes Commands.",
-//                products = state.products,
-//                showOnlyFavorites = state.showOnlyFavorites,
-//                onShowOnlyFavoritesChange = { value ->
-//                    onEvent(MviEvent.ShowOnlyFavoritesChanged(value))
-//                },
-//                onReloadClick = {
-//                    onEvent(MviEvent.ReloadClicked)
-//                },
-//                onErrorClick = {
-//                    onEvent(MviEvent.LoadWithErrorClicked)
-//                },
-//                onProductClick = { productId ->
-//                    onEvent(MviEvent.ProductClicked(productId))
-//                },
-//                onFavoriteClick = { productId ->
-//                    onEvent(MviEvent.FavoriteClicked(productId))
-//                },
-//            )
-//        }
-//    }
-//}

@@ -28,10 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemKey
+import dev.rudak.androidcheatsheet.core.ui.R
 import dev.rudak.androidcheatsheet.core.ui.model.ProductCardUiModel
 import dev.rudak.androidcheatsheet.core.ui.theme.FavoriteIconColor
 import dev.rudak.androidcheatsheet.core.ui.theme.ProductCardBackground
@@ -48,6 +50,7 @@ fun PagedProductsDemoContent(
     onErrorClick: () -> Unit,
     onProductClick: (Long) -> Unit,
     onFavoriteClick: (productId: Long, isFavorite: Boolean) -> Unit,
+    onSettingsClick: () -> Unit,
 ) {
     val refreshState = products.loadState.refresh
     val appendState = products.loadState.append
@@ -87,10 +90,27 @@ fun PagedProductsDemoContent(
                 .fillMaxSize()
                 .padding(16.dp),
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f),
+                )
+
+                IconButton(
+                    onClick = onSettingsClick,
+                    modifier = Modifier.size(48.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_settings),
+                        contentDescription = "Remote Config",
+                        modifier = Modifier.size(28.dp),
+                    )
+                }
+            }
 
             Text(
                 modifier = Modifier.padding(
@@ -140,10 +160,7 @@ fun PagedProductsDemoContent(
                 }
             }
 
-            if (
-                !isLoading &&
-                products.itemCount == 0
-            ) {
+            if (!isLoading && products.itemCount == 0) {
                 Text(
                     modifier = Modifier.padding(top = 24.dp),
                     text = "No products",

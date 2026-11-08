@@ -12,22 +12,32 @@ import dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen.ProductDetai
 import dev.rudak.androidcheatsheet.feature.mvvm.presentation.screen.RecentlyViewedScreen
 
 @Composable
-fun AppNavHost() {
-
+fun AppNavHost(
+    startDestination: String,
+    remoteConfigDestination: RemoteConfigDestination
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = Destinations.PRODUCTS_MVVM,
+        startDestination = startDestination,
     ) {
-
         composable(Destinations.PRODUCTS_MVVM) {
             MvvmScreen(
                 onNavigate = { productId ->
-                    navController.navigate(Destinations.productDetails(productId))
+                    navController.navigate(
+                        Destinations.productDetails(productId)
+                    )
                 },
                 onNavigateToHistory = {
-                    navController.navigate(Destinations.RECENTLY_VIEWED)
+                    navController.navigate(
+                        Destinations.RECENTLY_VIEWED
+                    )
+                },
+                onSettingsClick = {
+                    navController.navigate(
+                        Destinations.DEBUG_REMOTE_CONFIG
+                    )
                 },
             )
         }
@@ -35,7 +45,9 @@ fun AppNavHost() {
         composable(Destinations.RECENTLY_VIEWED) {
             RecentlyViewedScreen(
                 onProductClick = { productId ->
-                    navController.navigate(Destinations.productDetails(productId))
+                    navController.navigate(
+                        Destinations.productDetails(productId)
+                    )
                 },
                 onBackClick = navController::popBackStack,
             )
@@ -48,7 +60,16 @@ fun AppNavHost() {
                         Destinations.productDetails(productId)
                     )
                 },
+                onSettingsClick = {
+                    navController.navigate(
+                        Destinations.DEBUG_REMOTE_CONFIG
+                    )
+                },
             )
+        }
+
+        with(remoteConfigDestination) {
+            register(navController)
         }
 
         composable(
@@ -59,7 +80,9 @@ fun AppNavHost() {
                 },
             ),
         ) { backStackEntry ->
-            val productId = backStackEntry.arguments?.getLong(Destinations.PRODUCT_ID) ?: return@composable
+            val productId = backStackEntry.arguments
+                ?.getLong(Destinations.PRODUCT_ID)
+                ?: return@composable
 
             ProductDetailsScreen(
                 productId = productId,
